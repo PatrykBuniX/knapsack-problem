@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 
-def create_chart(dataArr, title, xlabel, ylabel, yscale="linear", base=None):
+def create_chart(dataArr, title, xlabel, ylabel, yscale="linear"):
     for item in dataArr:
         plotter.plot(item["xdata"], item["ydata"],
                      color=item["color"], label=item["label"])
@@ -12,10 +12,7 @@ def create_chart(dataArr, title, xlabel, ylabel, yscale="linear", base=None):
     plotter.title(title)
     plotter.xlabel(xlabel)
     plotter.ylabel(ylabel)
-    if base:
-        plotter.yscale(yscale, base=base)
-    else:
-        plotter.yscale(yscale)
+    plotter.yscale(yscale)
     plotter.grid()
     plotter.legend()
     now_time = datetime.now()

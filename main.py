@@ -17,13 +17,14 @@ print("Maksymalna wartość plecaka:", max_value, max_value2)
 
 
 def measure_with_const_weight_limit(weight_limit):
-    print("A weight-limit - const, n - increasing")
+    print(f"A) weight-limit - const ({weight_limit}), n - increasing")
     dynamicTimes = []
     approxTimes = []
     relativeErrors = []
 
     listSizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
                  1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]
+
     for size in listSizes:
         dynamicTimesScores = []
         approxTimesScores = []
@@ -42,7 +43,7 @@ def measure_with_const_weight_limit(weight_limit):
             dstop = perf_counter()
             dynamicAlgoTime = dstop - dstart
             print('dynamic time: ', dynamicAlgoTime)
-            dynamicTimesScores.append(dynamicAlgoTime)
+            dynamicTimesScores.append(dynamicAlgoTime * 1000)
 
             astart = perf_counter()
             max_value_approx, final_approx_weight = knapsack.approx(
@@ -52,7 +53,7 @@ def measure_with_const_weight_limit(weight_limit):
             astop = perf_counter()
             approxAlgoTime = astop - astart
             print('approx time: ', approxAlgoTime)
-            approxTimesScores.append(approxAlgoTime)
+            approxTimesScores.append(approxAlgoTime * 1000)
 
             relativeError = abs(max_value_dynamic -
                                 max_value_approx) / max_value_dynamic
@@ -69,7 +70,7 @@ def measure_with_const_weight_limit(weight_limit):
             "color": "red", "label": "dynamic"},
         {"xdata": listSizes, "ydata": approxTimes,
             "color": "green", "label": "approx"}
-    ], "Stała pojemność plecaka - czas", "Liczba elementów", "Czas [s]", "linear")
+    ], "Stała pojemność plecaka - czas", "Liczba elementów", "Czas [ms]")
 
     relativeErrorsData = {}
     for i in range(len(listSizes)):
@@ -79,7 +80,73 @@ def measure_with_const_weight_limit(weight_limit):
     plotter.create_bar_chart(
         relativeErrorsData, "Stała pojemność plecaka - błąd względny", "Liczba elementów", "Błąd względny")
 
-
-measure_with_const_weight_limit(750)
-
 # B weight-limit - increasing, n - const
+
+
+def measure_with_const_items_length(itemsLength):
+    print(f"B) n - const ({itemsLength}), weight-limit - increasing")
+    dynamicTimes = []
+    approxTimes = []
+    relativeErrors = []
+
+    weightLimits = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000,
+                    1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]
+
+    for weightLimit in weightLimits:
+        dynamicTimesScores = []
+        approxTimesScores = []
+        relativeErrorsScores = []
+
+        for i in range(20):
+            print(f"weight limit = {weightLimit}")
+            weights = [randint(1, 1000) for _ in range(itemsLength)]
+            values = [randint(1, 1000) for _ in range(itemsLength)]
+
+            print(
+                f"Liczba elementów: {itemsLength}, waga plecaka: {weightLimit}", )
+            dstart = perf_counter()
+            max_value_dynamic = knapsack.dynamic(weightLimit, weights, values)
+            print("Dynamiczne: wartość plecaka:", max_value_dynamic)
+            dstop = perf_counter()
+            dynamicAlgoTime = dstop - dstart
+            print('dynamic time: ', dynamicAlgoTime)
+            dynamicTimesScores.append(dynamicAlgoTime * 1000)
+
+            astart = perf_counter()
+            max_value_approx, final_approx_weight = knapsack.approx(
+                weightLimit, weights, values)
+            print("Zachłanne: wartość plecaka:", max_value_approx)
+            print("Zachłanne: wage plecaka:", final_approx_weight)
+            astop = perf_counter()
+            approxAlgoTime = astop - astart
+            print('approx time: ', approxAlgoTime)
+            approxTimesScores.append(approxAlgoTime * 1000)
+
+            relativeError = abs(max_value_dynamic -
+                                max_value_approx) / max_value_dynamic
+            relativeErrorsScores.append(relativeError)
+            print("Błąd względny:", relativeError)
+
+        dynamicTimes.append(sum(dynamicTimesScores) / len(dynamicTimesScores))
+        approxTimes.append(sum(approxTimesScores) / len(approxTimesScores))
+        relativeErrors.append(sum(relativeErrorsScores) /
+                              len(relativeErrorsScores))
+
+    plotter.create_chart([
+        {"xdata": weightLimits, "ydata": dynamicTimes,
+            "color": "red", "label": "dynamic"},
+        {"xdata": weightLimits, "ydata": approxTimes,
+            "color": "green", "label": "approx"}
+    ], "Stała liczba elementów - czas", "Pojemność plecaka", "Czas [ms]")
+
+    relativeErrorsData = {}
+    for i in range(len(weightLimits)):
+        size = weightLimits[i]
+        relativeErrorsData[size] = relativeErrors[i]
+
+    plotter.create_bar_chart(
+        relativeErrorsData, "Stała liczba elementów - błąd względny", "Pojemność plecaka", "Błąd względny")
+
+
+measure_with_const_weight_limit(1000)
+measure_with_const_items_length(750)
