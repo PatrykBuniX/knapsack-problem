@@ -49,7 +49,7 @@ def measure_with_const_weight_limit(weight_limit):
             max_value_approx, final_approx_weight = knapsack.approx(
                 weight_limit, weights, values)
             print("Zachłanne: wartość plecaka:", max_value_approx)
-            print("Zachłanne: wage plecaka:", final_approx_weight)
+            print("Zachłanne: waga plecaka:", final_approx_weight)
             astop = perf_counter()
             approxAlgoTime = astop - astart
             print('approx time: ', approxAlgoTime)
@@ -116,7 +116,7 @@ def measure_with_const_items_length(itemsLength):
             max_value_approx, final_approx_weight = knapsack.approx(
                 weightLimit, weights, values)
             print("Zachłanne: wartość plecaka:", max_value_approx)
-            print("Zachłanne: wage plecaka:", final_approx_weight)
+            print("Zachłanne: waga plecaka:", final_approx_weight)
             astop = perf_counter()
             approxAlgoTime = astop - astart
             print('approx time: ', approxAlgoTime)
