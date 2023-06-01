@@ -1,4 +1,4 @@
-def dynamic(weight_limit, weights, values):
+def dynamic(weight_limit, weights, values, printTable=False):
     n = len(weights)
 
     # Inicjalizacja tablicy dynamicznej
@@ -17,6 +17,11 @@ def dynamic(weight_limit, weights, values):
                 # dla obecnego przedmiotu + wartość plecaka dla wagi zmniejszonej o wagę obecnego przedmiotu
                 dp[i][w] = max(dp[i - 1][w], values[i - 1] +
                                dp[i - 1][w - weights[i - 1]])
+
+    if printTable:
+        # Wyświetlenie tablicy dynamicznej
+        for row in dp:
+            print("\t".join(map(str, row)))
 
     # Zwracamy wartość plecaka dla maksymalnej dostępnej wagi
     return dp[n][weight_limit]

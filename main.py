@@ -4,17 +4,7 @@ from random import randint
 from time import perf_counter
 
 
-weights = [3, 2, 4, 3, 1]
-values = [5, 3, 4, 4, 2]
-weight_limit = 8
-
-max_value = knapsack.dynamic(weight_limit, weights, values)
-max_value2 = knapsack.approx(weight_limit, weights, values)
-print("Maksymalna wartość plecaka:", max_value, max_value2)
-
-
 # A weight-limit - const, n - increasing
-
 
 def measure_with_const_weight_limit(weight_limit):
     print(f"A) weight-limit - const ({weight_limit}), n - increasing")
@@ -80,8 +70,8 @@ def measure_with_const_weight_limit(weight_limit):
     plotter.create_bar_chart(
         relativeErrorsData, "Stała pojemność plecaka - błąd względny", "Liczba elementów", "Błąd względny")
 
-# B weight-limit - increasing, n - const
 
+# B weight-limit - increasing, n - const
 
 def measure_with_const_items_length(itemsLength):
     print(f"B) n - const ({itemsLength}), weight-limit - increasing")
@@ -148,5 +138,14 @@ def measure_with_const_items_length(itemsLength):
         relativeErrorsData, "Stała liczba elementów - błąd względny", "Pojemność plecaka", "Błąd względny")
 
 
-measure_with_const_weight_limit(1000)
-measure_with_const_items_length(750)
+# measure_with_const_weight_limit(1000)
+# measure_with_const_items_length(750)
+
+# weryfikacja
+weights = [3, 2, 4, 3, 1]
+values = [5, 3, 4, 4, 2]
+weight_limit = 8
+
+max_value = knapsack.dynamic(weight_limit, weights, values, True)
+max_value2 = knapsack.approx(weight_limit, weights, values)
+print("Maksymalna wartość plecaka:", max_value, max_value2)
